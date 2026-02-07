@@ -1,6 +1,7 @@
 import { Injectable, OnModuleInit, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Client } from 'es7';
+import type { IndexSettings, IndexMappings } from './tdo/create-index.tdo';
 
 @Injectable()
 export class EslasticService implements OnModuleInit {
@@ -52,5 +53,67 @@ export class EslasticService implements OnModuleInit {
   async getClusterInfo() {
     const info = await this.esClient.info();
     return info.body;
+  }
+
+  // Create an index
+  async createIndex(
+    indexName: string,
+    settings?: IndexSettings,
+    mappings?: IndexMappings,
+  ) {
+    try {
+      const body: { settings?: IndexSettings; mappings?: IndexMappings } = {};
+
+      if (settings) {
+        body.settings = settings;
+      }
+
+      if (mappings) {
+        body.mappings = mappings;
+      }
+
+      const response = await this.esClient.indices.create({
+        index: indexName,
+        body,
+      });
+
+      this.logger.log(`Index '${indexName}' created successfully`);
+      return response.body;
+    } catch (error) {
+      this.logger.error(
+        `Failed to create index '${indexName}':`,
+        error instanceof Error ? error.message : String(error),
+      );
+      throw error;
+    }
+  }
+
+  // Check if index exists
+  async indexExists(indexName: string): Promise<boolean> {
+    const { body } = await this.esClient.indices.exists({ index: indexName });
+    return body;
+  }
+
+  // List all indices
+  async listIndices() {
+    const response = await this.esClient.cat.indices({ format: 'json' });
+    return response.body;
+  }
+
+  // Delete an index
+  async deleteIndex(indexName: string) {
+    try {
+      const response = await this.esClient.indices.delete({
+        index: indexName,
+      });
+      this.logger.log(`Index '${indexName}' deleted successfully`);
+      return response.body;
+    } catch (error) {
+      this.logger.error(
+        `Failed to delete index '${indexName}':`,
+        error instanceof Error ? error.message : String(error),
+      );
+      throw error;
+    }
   }
 }

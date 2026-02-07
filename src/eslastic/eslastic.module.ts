@@ -5,5 +5,6 @@ import { EslasticController } from './eslastic.controller';
 @Module({
   controllers: [EslasticController],
   providers: [EslasticService],
+  exports: [EslasticService],
 })
 export class EslasticModule {}

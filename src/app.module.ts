@@ -3,6 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { EslasticModule } from './eslastic/eslastic.module';
+import { DocumentsModule } from './documents/documents.module';
 
 @Module({
   imports: [
@@ -10,6 +11,7 @@ import { EslasticModule } from './eslastic/eslastic.module';
       isGlobal: true,
     }),
     EslasticModule,
+    DocumentsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
