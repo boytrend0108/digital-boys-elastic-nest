@@ -13,7 +13,8 @@ export type IndexMappingProperty = {
     | 'nested'
     | 'object'
     | 'geo_point'
-    | 'ip';
+    | 'ip'
+    | 'completion';
   analyzer?: string;
   search_analyzer?: string;
   format?: string;

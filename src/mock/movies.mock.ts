@@ -1,7 +1,5 @@
 import { Movie } from './movies.interface';
 
-export const MOVIES_INDEX = 'movies';
-
 export const moviesMock: Movie[] = [
   {
     name: 'The Shawshank Redemption',

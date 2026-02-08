@@ -4,6 +4,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { EslasticModule } from './eslastic/eslastic.module';
 import { DocumentsModule } from './documents/documents.module';
+import { MoviesModule } from './movies/movies.module';
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { DocumentsModule } from './documents/documents.module';
     }),
     EslasticModule,
     DocumentsModule,
+    MoviesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
